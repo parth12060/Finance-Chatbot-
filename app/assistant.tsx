@@ -12,10 +12,9 @@ export default function AssistantPage() {
         <WelcomeFinance />
         {/* FinanceChat embedded below the hero */}
         <div className="mt-12">
-          <FinanceChat />
+          <FinanceChat chatId="assistant" />
         </div>
       </div>
     </main>
   );
 }
-

@@ -7,16 +7,16 @@ type Props = { onSelectAction?: (prompt: string) => void };
 
 export default function WelcomeFinance({ onSelectAction }: Props) {
   const cards = [
-    { title: "What's my monthly budget?", subtitle: "Generate a personalized budget plan", action: "What's my monthly budget?" },
-    { title: "How can I save more this month?", subtitle: "Practical saving tips based on your spending", action: "How can I save more this month?" },
-    { title: "Create a 3-month financial plan", subtitle: "Budget, savings, and basic investment goals", action: "Create a 3-month financial plan" },
-    { title: "Track my expenses", subtitle: "Categorize and monitor your daily spending", action: "Track my expenses" },
+    { title: "Calculate my tax", subtitle: "Old vs New regime comparison with exact breakdowns", action: "My salary is 15 LPA, how much tax do I pay?" },
+    { title: "Plan a home purchase", subtitle: "EMI, affordability & tax benefits under §24(b) & §80C", action: "I want to buy a house worth 50 lakh, income 12 LPA" },
+    { title: "Find tax-saving options", subtitle: "Missed deductions across 80C, 80D, 80CCD(1B) & more", action: "How to save tax? I earn 20 lakh" },
+    { title: "Project my SIP returns", subtitle: "Mutual fund return projections with SIP calculator", action: "SIP of 10000 monthly for 15 years at 12%" },
   ];
 
   return (
     <div className="max-w-4xl">
-      <h1 className="text-4xl font-bold mb-4">Hello — who may assist you in your financial journey?</h1>
-      <p className="text-slate-400 mb-8">I could help you with budgeting, saving, tracking expenses, and building a simple financial plan.</p>
+      <h1 className="text-4xl font-bold mb-4">Hello — how may I assist you in your financial journey?</h1>
+      <p className="text-slate-400 mb-8">I can help you with tax calculations, regime comparison, SIP/EMI/PPF planning, stock &amp; mutual fund data, home purchase planning, audit guidance, and CA-level Form 16 analysis.</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {cards.map((c, idx) => (

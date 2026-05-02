@@ -118,7 +118,7 @@ function Navbar() {
   return (
     <>
       {/* Top Navbar */}
-      <nav className="fixed top-0 left-0 right-0 h-16 z-50 flex items-center justify-between px-4 bg-background border-b border-border">
+      <nav className="fixed top-0 left-0 right-0 h-16 z-50 flex items-center justify-between px-4 bg-background border-b border-border relative">
         {/* Left side - Menu button (only show when signed in) */}
         {session ? (
           <button
@@ -136,8 +136,8 @@ function Navbar() {
           <div className="w-10" />
         )}
 
-        {/* Center - Title */}
-        <h1 className="text-lg font-semibold text-foreground">Finance Chat</h1>
+        {/* Center - Title (absolutely centered) */}
+        <h1 className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-foreground">Finance Chat</h1>
 
         {/* Right side - Theme toggle and Auth */}
         <div className="flex items-center gap-3">

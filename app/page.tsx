@@ -116,56 +116,58 @@ export default function AssistantPage() {
   };
 
   return (
-    <div className="pt-16">
-      {/* Main Content - Add margin when sidebar is visible */}
-      <main className={`transition-all duration-300 ${session ? 'lg:ml-0' : ''}`}>
-        <div className="w-full max-w-5xl mx-auto px-8 py-12">
-          {/* Only show welcome content if user hasn't started chatting */}
-          {!hasStartedChat && (
-            <>
-              <header className="max-w-4xl mx-auto text-left mb-12">
-                <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white mb-4">
-                  Hello — who may assist you in your financial journey?
+    <div className="pt-16 flex flex-col" style={{ minHeight: hasStartedChat ? 'auto' : '100vh' }}>
+      {/* Main Content */}
+      <main className={`${!hasStartedChat ? 'flex-1 flex flex-col' : ''} transition-all duration-300 ${session ? 'lg:ml-0' : ''}`}>
+
+        {/* Welcome screen — vertically centered between navbar and input bar */}
+        {!hasStartedChat && (
+          <div className="flex-1 flex items-start justify-center px-8 pt-12 pb-40">
+            <div className="w-full max-w-4xl">
+              <header className="text-left mb-8">
+                <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
+                  Hello — how may I assist you in your financial journey?
                 </h1>
                 <p className="text-slate-600 dark:text-slate-300 max-w-2xl">
-                  I could help you with budgeting, saving, tracking expenses, and building a simple financial plan.
+                  I can help you with tax calculations, regime comparison, SIP/EMI/PPF planning, stock &amp; mutual fund data, home purchase planning, audit guidance, and CA-level Form 16 analysis.
                 </p>
                 {!session && (
-                  <p className="mt-4 text-sm text-yellow-600 dark:text-yellow-400 flex items-center gap-2">
+                  <p className="mt-3 text-sm text-yellow-600 dark:text-yellow-400 flex items-center gap-2">
                     <span>💡</span>
                     <span>You can chat now! <button onClick={() => signIn("google")} className="underline hover:text-yellow-700 dark:hover:text-yellow-300">Sign in</button> to save your chat history.</span>
                   </p>
                 )}
               </header>
 
-              {/* Example cards area */}
-              <section className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+              <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {[
-                  "What's my monthly budget?",
-                  "How can I save more this month?",
-                  "Create a 3-month financial plan",
-                  "Track my expenses",
-                ].map((t) => (
-                  <div 
-                    key={t}
-                    onClick={() => handleCardClick(t)}
+                  { title: "Calculate my tax", q: "My salary is 15 LPA, how much tax do I pay?", desc: "Old vs New regime comparison with exact breakdowns" },
+                  { title: "Plan a home purchase", q: "I want to buy a house worth 50 lakh, income 12 LPA", desc: "EMI, affordability & tax benefits under §24(b) & §80C" },
+                  { title: "Find tax-saving options", q: "How to save tax? I earn 20 lakh", desc: "Missed deductions across 80C, 80D, 80CCD(1B) & more" },
+                  { title: "Project my SIP returns", q: "SIP of 10000 monthly for 15 years at 12%", desc: "Mutual fund return projections with SIP calculator" },
+                ].map((c) => (
+                  <div
+                    key={c.q}
+                    onClick={() => handleCardClick(c.q)}
                     className="rounded-xl border border-slate-300 dark:border-slate-700 p-6 bg-white dark:bg-transparent hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors cursor-pointer"
                   >
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-                      {t}
+                    <h3 className="font-semibold text-slate-900 dark:text-white mb-1">
+                      {c.title}
                     </h3>
                     <p className="text-slate-600 dark:text-slate-400 text-sm">
-                      Try this suggestion to kickstart a conversation with the chat below.
+                      {c.desc}
                     </p>
                   </div>
                 ))}
               </section>
-            </>
-          )}
+            </div>
+          </div>
+        )}
 
-          {/* Chat Component */}
-          <FinanceChat 
-            triggerQuestion={triggerQuestion} 
+        {/* Chat area */}
+        <div className="w-full max-w-5xl mx-auto px-8">
+          <FinanceChat
+            triggerQuestion={triggerQuestion}
             chatId={currentChatId}
             onMessageSent={updateChatHistory}
             onSignInRequired={() => signIn("google")}
