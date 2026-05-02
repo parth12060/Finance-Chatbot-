@@ -1841,7 +1841,7 @@ function TaxPlannerCardWrapper({ data }: { data: Record<string, unknown> }) {
         }),
       });
       const json = await res.json();
-      if (json.calculator_result) setPlanData(json.calculator_result);
+      if (json.calculator_result) setPlanData({ ...json.calculator_result, type: "tax_planner" });
     } finally {
       setLoading(false);
     }
@@ -2183,7 +2183,9 @@ export default function FinanceChat({ triggerQuestion, chatId, onMessageSent }: 
         sender: "bot",
         text: data.answer || "Here is your personalised tax saving plan:",
         time: Date.now(),
-        calculator_result: data.calculator_result,
+        calculator_result: data.calculator_result
+          ? { ...data.calculator_result, type: "tax_planner" }
+          : undefined,
       }]);
     } catch {
       setMessages(prev => [...prev, { sender: "bot", text: "⚠️ Could not reach the backend.", time: Date.now() }]);
