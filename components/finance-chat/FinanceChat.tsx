@@ -1544,14 +1544,6 @@ function GoalPlanCard({ data }: { data: Record<string, unknown> }) {
 // ════════════════════════════════════════════════
 // TAX PLANNER CARD
 // ════════════════════════════════════════════════
-const SECTION_COLORS: Record<string, string> = {
-  "Section 10(13A)": "bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300",
-  "Section 80C":     "bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300",
-  "Section 80CCD(1B)":"bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300",
-  "Section 80D":     "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300",
-  "Section 24(b)":   "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300",
-  "Section 80E":     "bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300",
-};
 
 function TaxPlannerCard({ data, onForceOldRegime }: {
   data: Record<string, unknown>;
@@ -1708,35 +1700,33 @@ function TaxPlannerCard({ data, onForceOldRegime }: {
           </p>
         )}
         <div className="space-y-3">
-          {steps.map((s) => {
-            const section = String(s.section ?? "");
-            const sectionColor = SECTION_COLORS[section] ?? "bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300";
-            const hasTaxSaving = Number(s.tax_saving ?? 0) > 0;
-            const warning = s.warning ? String(s.warning) : null;
+          {steps.map((s, idx) => {
+            const isDone     = Boolean(s.done);
+            const title      = String(s.step        ?? s.title  ?? "");
+            const detail     = String(s.description ?? s.detail ?? "");
+            const taxSaved   = Number(s.tax_saved   ?? s.tax_saving ?? 0);
             return (
-              <div key={Number(s.step)} className="flex gap-3">
-                <div className={`w-6 h-6 rounded-full text-white flex items-center justify-center font-bold flex-shrink-0 mt-0.5 ${showOldSteps ? "bg-amber-600 dark:bg-amber-700" : "bg-emerald-600 dark:bg-emerald-700"}`}>
-                  {Number(s.step)}
+              <div key={idx} className="flex gap-3">
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold
+                  ${isDone
+                    ? "bg-emerald-500 dark:bg-emerald-600 text-white"
+                    : showOldSteps ? "bg-amber-500 dark:bg-amber-600 text-white" : "bg-blue-500 dark:bg-blue-600 text-white"
+                  }`}>
+                  {isDone ? "✓" : idx + 1}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <p className="font-semibold text-slate-800 dark:text-slate-200">{String(s.title ?? "")}</p>
-                    <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${sectionColor}`}>
-                      {section}
-                    </span>
+                    <p className="font-semibold text-slate-800 dark:text-slate-200 text-xs">{title}</p>
+                    {isDone && (
+                      <span className="text-xs bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 px-1.5 py-0.5 rounded">Done</span>
+                    )}
                   </div>
-                  <p className="text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">{String(s.detail ?? "")}</p>
-                  {warning ? (
-                    <p className="text-red-600 dark:text-red-400 font-medium mt-1 flex items-start gap-1">
-                      <span>⚠️</span><span>{warning}</span>
+                  <p className="text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed text-xs">{detail}</p>
+                  {taxSaved > 0 && (
+                    <p className="text-emerald-600 dark:text-emerald-400 font-medium mt-0.5 text-xs">
+                      💰 Saves {fmtINR(taxSaved)} in tax
                     </p>
-                  ) : null}
-                  {hasTaxSaving ? (
-                    <p className="text-emerald-600 dark:text-emerald-400 font-medium mt-1">
-                      Tax saving: {fmtINR(s.tax_saving)}
-                    </p>
-                  ) : null}
-                  <p className="text-slate-400 dark:text-slate-500 italic mt-0.5">Source: {String(s.source ?? "")}</p>
+                  )}
                 </div>
               </div>
             );
