@@ -1754,6 +1754,59 @@ function TaxPlannerCard({ data, onForceOldRegime }: {
         ) : null}
       </div>
 
+      {/* ── Tax Saving Schemes ── */}
+      {(() => {
+        const schemes = (data.schemes ?? []) as Record<string, unknown>[];
+        if (!schemes.length) return null;
+        return (
+          <div className="bg-white dark:bg-gray-900 px-4 py-3 border-b border-slate-100 dark:border-slate-700">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
+              💰 Tax-Saving Schemes You Can Use
+            </p>
+            <div className="space-y-4">
+              {schemes.map((scheme, i) => {
+                const products = (scheme.products ?? []) as Record<string, unknown>[];
+                const gap = Number(scheme.gap ?? 0);
+                const taxSaved = Number(scheme.tax_saved ?? 0);
+                return (
+                  <div key={i} className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+                    {/* Scheme header */}
+                    <div className="bg-slate-50 dark:bg-slate-800 px-3 py-2 flex items-center justify-between flex-wrap gap-2">
+                      <div>
+                        <p className="font-semibold text-slate-800 dark:text-slate-200 text-xs">{String(scheme.section ?? "")}</p>
+                        <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">Limit: {String(scheme.limit ?? "")}</p>
+                      </div>
+                      {gap > 0 && (
+                        <div className="text-right">
+                          <p className="text-xs text-slate-500 dark:text-slate-400">Unused gap</p>
+                          <p className="font-bold text-orange-500 dark:text-orange-400 text-sm">{fmtINR(gap)}</p>
+                          <p className="text-emerald-600 dark:text-emerald-400 text-xs">Save up to {fmtINR(taxSaved)}</p>
+                        </div>
+                      )}
+                    </div>
+                    {/* Products */}
+                    <div className="divide-y divide-slate-100 dark:divide-slate-700">
+                      {products.map((p, j) => (
+                        <div key={j} className="px-3 py-2">
+                          <div className="flex items-start gap-2">
+                            <span className="text-emerald-500 mt-0.5 flex-shrink-0">✦</span>
+                            <div>
+                              <p className="font-medium text-slate-800 dark:text-slate-200 text-xs">{String(p.name ?? "")}</p>
+                              <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5 leading-relaxed">{String(p.why ?? "")}</p>
+                              <p className="text-blue-600 dark:text-blue-400 text-xs mt-0.5 italic">e.g. {String(p.example ?? "")}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })()}
+
       {/* ── Footer ── */}
       <div className="bg-slate-50 dark:bg-gray-800 px-4 py-3">
         <p className="text-slate-400 dark:text-slate-500">{String(data.source ?? "")}</p>
