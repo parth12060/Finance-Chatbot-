@@ -1,7 +1,7 @@
 // app/page.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import FinanceChat from "@/components/finance-chat/FinanceChat";
@@ -13,7 +13,7 @@ type ChatHistory = {
   timestamp: number;
 };
 
-export default function AssistantPage() {
+function AssistantPageInner() {
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const [triggerQuestion, setTriggerQuestion] = useState<string>("");
@@ -175,5 +175,13 @@ export default function AssistantPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function AssistantPage() {
+  return (
+    <Suspense fallback={null}>
+      <AssistantPageInner />
+    </Suspense>
   );
 }
