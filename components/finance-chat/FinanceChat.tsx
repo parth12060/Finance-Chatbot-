@@ -2152,10 +2152,10 @@ export default function FinanceChat({ triggerQuestion, chatId, onMessageSent }: 
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-5 text-white">
               <div className="flex items-center gap-3 mb-1">
                 <Sparkles size={22} />
-                <span className="text-lg font-bold">You're on a roll!</span>
+                <span className="text-lg font-bold">You&apos;re on a roll!</span>
               </div>
               <p className="text-blue-100 text-sm">
-                Sign in to keep chatting — it's free and takes 10 seconds.
+                Sign in to keep chatting — it&apos;s free and takes 10 seconds.
               </p>
             </div>
 
@@ -2189,7 +2189,7 @@ export default function FinanceChat({ triggerQuestion, chatId, onMessageSent }: 
                 onClick={() => setShowSignInWall(false)}
                 className="w-full text-center text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors py-1"
               >
-                Maybe later — I'll lose my progress
+                Maybe later — I&apos;ll lose my progress
               </button>
             </div>
           </div>
